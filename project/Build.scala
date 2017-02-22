@@ -7,7 +7,7 @@ import scoverage.ScoverageKeys
 
 object TwitterServer extends Build {
   val branch = Process("git" :: "rev-parse" :: "--abbrev-ref" :: "HEAD" :: Nil).!!.trim
-  val suffix = if (branch == "master") "" else "-SNAPSHOT"
+  val suffix = ""
 
   val libVersion = "1.27.0" + suffix
   val utilVersion = "6.41.0" + suffix
@@ -27,7 +27,7 @@ object TwitterServer extends Build {
   val sharedSettings = Seq(
     version := libVersion,
     organization := "com.twitter",
-    scalaVersion := "2.12.1",
+    scalaVersion := "2.11.8",
     crossScalaVersions := Seq("2.11.8", "2.12.1"),
     libraryDependencies ++= Seq(
       "org.scalacheck" %% "scalacheck" % "1.13.4" % "test",
@@ -99,7 +99,7 @@ object TwitterServer extends Build {
       sharedSettings ++
       unidocSettings
   ).settings(
-    name := "twitter-server",
+    name := "gmf-jvm-twitter-server",
     libraryDependencies ++= Seq(
       finagle("core"),
       finagle("http"),
