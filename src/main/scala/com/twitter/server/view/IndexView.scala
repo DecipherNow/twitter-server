@@ -1,5 +1,6 @@
 package com.twitter.server.view
 
+import com.deciphernow.server.helper.PathResolver
 import com.twitter.concurrent.AsyncStream
 import com.twitter.finagle.http.Method
 import com.twitter.finagle.http.Method.{Get, Post}
@@ -28,7 +29,8 @@ object IndexView {
 
   /** Render nav and contents into an html template. */
   def render(title: String, uri: String, nav: Seq[Entry], contents: Reader): Reader = {
-
+    val staticPrefix = PathResolver.staticPrefix
+    val routePrefix  = PathResolver.routePrefix
     def renderNav(
       ls: Seq[Entry],
       sb: StringBuilder = new StringBuilder
@@ -54,6 +56,7 @@ object IndexView {
           // Spaces are replaced with '-' since HTML IDs do not permit whitespace
           val formattedId = id.replace(' ', '-')
           val selected = if (href == uri) "selected" else ""
+
           sb ++= s"""
             <a href="${href}">
               <li id="${formattedId}" class="selectable $selected">
@@ -92,15 +95,15 @@ object IndexView {
               <head>
                 <title>${title} &middot; Twitter Server Admin</title>
                 <!-- css -->
-                <link type="text/css" href="/admin/files/css/bootstrap.min.css" rel="stylesheet"/>
-                <link type="text/css" href="/admin/files/css/index.css" rel="stylesheet"/>
-                <link type="text/css" href="/admin/files/css/client-registry.css" rel="stylesheet"/>
+                <link type="text/css" href="${staticPrefix}/admin/files/css/bootstrap.min.css" rel="stylesheet"/>
+                <link type="text/css" href="${staticPrefix}/admin/files/css/index.css" rel="stylesheet"/>
+                <link type="text/css" href="${staticPrefix}/admin/files/css/client-registry.css" rel="stylesheet"/>
                 <!-- js -->
                 <script type="application/javascript" src="//www.google.com/jsapi"></script>
-                <script type="application/javascript" src="/admin/files/js/jquery.min.js"></script>
-                <script type="application/javascript" src="/admin/files/js/bootstrap.min.js"></script>
-                <script type="application/javascript" src="/admin/files/js/index.js"></script>
-                <script type="application/javascript" src="/admin/files/js/utils.js"></script>
+                <script type="application/javascript" src="${staticPrefix}/admin/files/js/jquery.min.js"></script>
+                <script type="application/javascript" src="${staticPrefix}/admin/files/js/bootstrap.min.js"></script>
+                <script type="application/javascript" src="${staticPrefix}/admin/files/js/index.js"></script>
+                <script type="application/javascript" src="${staticPrefix}/admin/files/js/utils.js"></script>
               </head>
               <body>
                 <div id="wrapper">
