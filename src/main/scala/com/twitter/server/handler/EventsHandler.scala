@@ -4,13 +4,13 @@ import com.twitter.concurrent.AsyncStream
 import com.twitter.finagle.Service
 import com.twitter.finagle.http.{ParamMap, Request, Response}
 import com.twitter.finagle.tracing.SpanId
-import com.twitter.io.{Buf, Reader}
-import com.twitter.server.PathResolver
+import com.twitter.io.{Reader, Buf}
 import com.twitter.server.handler.EventRecordingHandler._
 import com.twitter.server.util.HttpUtils.{accepts, expectsJson}
 import com.twitter.server.util.{JsonSink, TraceEventSink}
-import com.twitter.util.events.{Event, Sink}
+import com.twitter.util.events.{Sink, Event}
 import com.twitter.util.{Future, Throw, Try}
+import java.util.logging.{LogRecord, Logger}
 
 /**
  * "Controller" for displaying the current state of the sink.
@@ -21,8 +21,6 @@ private[server] class EventsHandler(sink: Sink) extends Service[Request, Respons
   private[this] val log = Logger.getLogger(getClass.getName)
 
   def this() = this(Sink.default)
-
-
 
   private[this] def eventFilterFromParams(params: ParamMap): EventFilter = {
     val eventTypeFilter = params.get("eventType") match {
@@ -127,8 +125,6 @@ private object EventsHandler {
         }
   }
 
-  val staticPrefix = PathResolver.staticPrefix
-
   val columns: Seq[String] =
     Seq("Event", "When", "LongVal", "ObjectVal", "DoubleVal", "TraceID", "SpanID")
 
@@ -221,7 +217,8 @@ private object EventsHandler {
             $(".filter-input").blur();
             $("#eventTable > tbody").empty();
 
-            $.post("""" + s"""${staticPrefix}""" + """/admin/events",
+            $.post(
+              "/admin/events",
               {
                 eventType: $('#eventTypeFilter').val(),
                 objectVal: $('#objectValFilter').val(),
@@ -248,7 +245,7 @@ private object EventsHandler {
             });
           });
           $('input:radio[name=recording]').change(function() {
-            $.post("""" + s"""${staticPrefix}""" + """/admin/events/record/" + this.value, loadEvents)
+            $.post("/admin/events/record/" + this.value, loadEvents)
             if (this.value == "recordOn") {
               $("#eventTable").show();
             } else {
