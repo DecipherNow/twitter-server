@@ -4,8 +4,8 @@ import com.twitter.app.App
 import com.twitter.finagle.stats.{AggregateWithHistogramDetails, DelegatingStatsReceiver, WithHistogramDetails}
 import com.twitter.server.handler._
 import com.twitter.server.view._
-import com.deciphernow.server.admin.{config => configuration}
-import com.deciphernow.server.helper.PathResolver
+
+
 object Admin {
 
   /**
@@ -28,11 +28,6 @@ object Admin {
     val Servers = Admin + "/servers/"
     val Files = Admin + "/files/"
   }
-  //val routePrefix = configuration.admin.prefix.route()
-
-//  def createPath(partialRoute: String) : String = {
-//    routePrefix + partialRoute
-//  }
 }
 
 /**

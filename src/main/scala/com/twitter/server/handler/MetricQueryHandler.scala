@@ -3,17 +3,21 @@ package com.twitter.server.handler
 import com.twitter.finagle.Service
 import com.twitter.finagle.http.{Request, Response}
 import com.twitter.io.Buf
+import com.twitter.server.PathResolver
 import com.twitter.server.util.HtmlUtils.escapeHtml
 import com.twitter.server.util.HttpUtils.{newResponse, parse}
 import com.twitter.server.util.{JsonConverter, MetricSource}
 import com.twitter.util.Future
 
 private object MetricQueryHandler {
+  val staticPrefix = PathResolver.staticPrefix
+  val routePrefix = PathResolver.routePrefix
+
   def render(title: String, keys: Set[String]): String =
-    s"""<link type="text/css" href="/admin/files/css/metric-query.css" rel="stylesheet"/>
-        <script type="application/javascript" src="/admin/files/js/metric-query.js"></script>
-        <script type="application/javascript" src="/admin/files/js/chart-renderer.js"></script>
-        <div id="metrics-grid" class="row" data-refresh-uri="/admin/metrics">
+    s"""<link type="text/css" href="${staticPrefix}/admin/files/css/metric-query.css" rel="stylesheet"/>
+        <script type="application/javascript" src="${staticPrefix}/admin/files/js/metric-query.js"></script>
+        <script type="application/javascript" src="${staticPrefix}/admin/files/js/chart-renderer.js"></script>
+        <div id="metrics-grid" class="row" data-refresh-uri="${routePrefix}/admin/metrics">
           <div class="col-md-4 snuggle-right">
             <ul id="metrics" class="list-unstyled">
               ${ (for (key <- keys.toSeq.sorted) yield {

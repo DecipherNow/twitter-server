@@ -1,12 +1,12 @@
 package com.twitter.server.view
 
-import com.deciphernow.server.helper.PathResolver
 import com.twitter.concurrent.AsyncStream
 import com.twitter.finagle.http.Method
 import com.twitter.finagle.http.Method.{Get, Post}
 import com.twitter.finagle.{Service, SimpleFilter}
 import com.twitter.finagle.http.{Request, Response}
 import com.twitter.io.{Buf, Reader}
+import com.twitter.server.PathResolver
 import com.twitter.server.util.HtmlUtils.escapeHtml
 import com.twitter.server.util.HttpUtils.{expectsHtml, newResponse}
 import com.twitter.util.Future

@@ -5,6 +5,7 @@ import com.twitter.finagle.http.{Request, Response}
 import com.twitter.finagle.server.ServerRegistry
 import com.twitter.finagle.util.StackRegistry
 import com.twitter.io.Buf
+import com.twitter.server.PathResolver
 import com.twitter.server.util.HtmlUtils.escapeHtml
 import com.twitter.server.util.HttpUtils.{new404, newResponse, parse}
 import com.twitter.server.util.MetricSource
@@ -12,11 +13,13 @@ import com.twitter.server.view.StackRegistryView
 import com.twitter.util.Future
 
 private object ServerRegistryHandler {
+  val staticPrefix = PathResolver.staticPrefix
+  val routePrefix = PathResolver.routePrefix
   def render(servers: Seq[(String, StackRegistry.Entry)]): String =
-    s"""<link type="text/css" href="/admin/files/css/server-registry.css" rel="stylesheet"/>
-        <script type="application/javascript" src="/admin/files/js/server-registry.js"></script>
-        <script type="application/javascript" src="/admin/files/js/chart-renderer.js"></script>
-        <ul id="server-tabs" class="nav nav-tabs" data-refresh-uri="/admin/metrics">
+    s"""<link type="text/css" href="${staticPrefix}/admin/files/css/server-registry.css" rel="stylesheet"/>
+        <script type="application/javascript" src="${staticPrefix}/admin/files/js/server-registry.js"></script>
+        <script type="application/javascript" src="${staticPrefix}/admin/files/js/chart-renderer.js"></script>
+        <ul id="server-tabs" class="nav nav-tabs" data-refresh-uri="${staticPrefix}/admin/metrics">
           ${
              (for {
                  (scope, entry) <- servers
@@ -35,16 +38,16 @@ private object ServerRegistryHandler {
                         <!-- server stats -->
                         <div class="server-info col-md-3">
                           <dl class="server-stats dl-horizontal">
-                            <dt><a href="/admin/metrics#$scope/pending">Pending:</a></dt>
+                            <dt><a href="${routePrefix}/admin/metrics#$scope/pending">Pending:</a></dt>
                             <dd id="${scopeDash}-pending" data-key="$scope/pending">...</dd>
 
-                            <dt><a href="/admin/metrics#$scope/failures">Failures:</a></dt>
+                            <dt><a href="${routePrefix}/admin/metrics#$scope/failures">Failures:</a></dt>
                             <dd id="${scopeDash}-failures" data-key="$scope/failures">...</dd>
 
-                            <dt><a href="/admin/metrics#$scope/success">Success:</a></dt>
+                            <dt><a href="${routePrefix}/admin/metrics#$scope/success">Success:</a></dt>
                             <dd id="${scopeDash}-success" data-key="$scope/success">...</dd>
 
-                            <dt><a href="/admin/metrics#$scope/requests">Requests:</a></dt>
+                            <dt><a href="${routePrefix}/admin/metrics#$scope/requests">Requests:</a></dt>
                             <dd id="${scopeDash}-requests"data-key="$scope/requests">...</dd>
                           </dl>
                         </div>

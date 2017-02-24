@@ -4,6 +4,7 @@ import com.twitter.finagle.http.{Request, Response}
 import com.twitter.finagle.Service
 import com.twitter.finagle.stats.{BucketAndCount, HistogramDetail, WithHistogramDetails}
 import com.twitter.io.Buf
+import com.twitter.server.PathResolver
 import com.twitter.server.util.HtmlUtils.escapeHtml
 import com.twitter.server.util.HttpUtils.{newResponse, parse}
 import com.twitter.server.util.JsonConverter
@@ -43,9 +44,11 @@ object HistogramQueryHandler {
     transform: Seq[BucketAndCount] => Any): String =
       JsonConverter.writeToString(transform(counts))
 
+  val staticPrefix = PathResolver.staticPrefix
+
   // Generates html for visualizing histograms
   private[HistogramQueryHandler] val render: String = {
-      val css = """<link type="text/css" href="/admin/files/css/histogram-query.css" rel="stylesheet"/>"""
+      val css = s"""<link type="text/css" href="${staticPrefix}/admin/files/css/histogram-query.css" rel="stylesheet"/>"""
 
       val chart =
         """<div class="chart">
@@ -102,19 +105,19 @@ object HistogramQueryHandler {
           </form>
         </div>"""
 
-      val scripts = """
+      val scripts = s"""
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-        <script type="text/javascript" src="/admin/files/js/histogram-utils.js"></script>
-        <script type="text/javascript" src="/admin/files/js/histogram-dom.js"></script>
-        <script type="text/javascript" src="/admin/files/js/histogram-main.js"></script>"""
+        <script type="text/javascript" src="${staticPrefix}/admin/files/js/histogram-utils.js"></script>
+        <script type="text/javascript" src="${staticPrefix}/admin/files/js/histogram-dom.js"></script>
+        <script type="text/javascript" src="${staticPrefix}/admin/files/js/histogram-main.js"></script>"""
       css + chart + statsTable + buttonPanel + scripts
   }
 
   // Generates html for the histogram selection page (/admin/histograms)
   private[HistogramQueryHandler] def renderFront(keys: Seq[String]): String = {
-    val css = """
-      <link type="text/css" href="/admin/files/css/metric-query.css" rel="stylesheet"/>
-      <link type="text/css" href="/admin/files/css/histogram-homepage.css" rel="stylesheet"/>
+    val css = s"""
+      <link type="text/css" href="${staticPrefix}/admin/files/css/metric-query.css" rel="stylesheet"/>
+      <link type="text/css" href="${staticPrefix}/admin/files/css/histogram-homepage.css" rel="stylesheet"/>
       """
     val histogramListing = s"""
       <div id="metrics-grid" class="row">

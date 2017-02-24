@@ -5,13 +5,16 @@ import com.twitter.finagle.client.{ClientRegistry, EndpointRegistry}
 import com.twitter.finagle.http.{Request, Response}
 import com.twitter.finagle.util.StackRegistry
 import com.twitter.io.Buf
+import com.twitter.server.PathResolver
 import com.twitter.server.util.HtmlUtils.escapeHtml
-import com.twitter.server.util.HttpUtils.{parse, new404, newResponse}
+import com.twitter.server.util.HttpUtils.{new404, newResponse, parse}
 import com.twitter.server.util.MetricSource
 import com.twitter.server.view.{EndpointRegistryView, StackRegistryView}
 import com.twitter.util.Future
 
 private object ClientRegistryHandler {
+
+  val staticPrefix = PathResolver.staticPrefix
 
   case class ClientProfile(
     name: String,
@@ -40,7 +43,7 @@ private object ClientRegistryHandler {
           (for (ClientProfile(name, addr, scope, sr, unavailable) <- profiles) yield {
             s"""<div class="col-md-3">
                   <div class="client">
-                    <h4 class="name"><a href="/admin/clients/$name">${escapeHtml(name)}</a></h4>
+                    <h4 class="name"><a href="${staticPrefix}/admin/clients/$name">${escapeHtml(name)}</a></h4>
                     <p class="dest text-muted">${escapeHtml(addr)}</p>
                     ${
                       if (unavailable == 0) "" else {

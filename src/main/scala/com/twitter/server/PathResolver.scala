@@ -1,8 +1,6 @@
-package com.deciphernow.server.helper
+package com.twitter.server
 
-import com.deciphernow.server.admin.config
-
-import com.deciphernow.server.admin.{config => configuration}
+import com.twitter.server.{config => configuration}
 
 /**
   * Created by ghershfield on 2/24/17.

@@ -1,17 +1,19 @@
 package com.twitter.server.view
 
+import com.twitter.server.PathResolver
 import com.twitter.server.handler.ThreadsHandler.{StackTrace, ThreadInfo}
 import com.twitter.server.util.HtmlUtils.escapeHtml
 import com.twitter.server.view.ThreadsView._
 
 private object ThreadsView {
 
+  private val staticPrefix = PathResolver.staticPrefix
   private val StackTraceRowClass = "stacktrace_row"
 
   private val IdleThreadStackClass = "idle_thread_stack"
 
   private val ScriptHeader =
-    """<script type="application/javascript" src="/admin/files/js/threads.js"></script>"""
+    s"""<script type="application/javascript" src="${staticPrefix}/admin/files/js/threads.js"></script>"""
 
   private val ScriptFooter = s"""<script>$$('.$StackTraceRowClass').hide();</script>"""
 

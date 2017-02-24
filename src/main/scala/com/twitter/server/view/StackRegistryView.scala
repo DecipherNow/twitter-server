@@ -1,6 +1,7 @@
 package com.twitter.server.view
 
 import com.twitter.finagle.util.StackRegistry
+import com.twitter.server.PathResolver
 import com.twitter.server.util.HtmlUtils.escapeHtml
 
 private[server] object StackRegistryView {
@@ -15,6 +16,9 @@ private[server] object StackRegistryView {
     entry: StackRegistry.Entry,
     statScope: Option[String]
   ): String = {
+
+    val routePrefix = PathResolver.routePrefix
+    val staticPrefix = PathResolver.staticPrefix
 
     def renderParams(params: Seq[(String, String)]): String =
       (for ((field, value) <- params) yield {
@@ -32,7 +36,7 @@ private[server] object StackRegistryView {
         </h2>
         ${
            (for (scope <- statScope) yield {
-            s"""<a href="/admin/metrics#${scope}/requests"
+            s"""<a href="${staticPrefix}/admin/metrics#${scope}/requests"
                 class="btn btn-default">
               <span class="glyphicon glyphicon-stats"></span>
                 Watch metrics for ${escapeHtml(entry.name)}
