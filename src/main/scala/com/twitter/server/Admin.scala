@@ -38,8 +38,6 @@ trait Admin { self: App with AdminHttpServer with Stats =>
   import AdminHttpServer.Route
   import Admin.Grouping
 
-  def simplePath : String // todo: remove from gmf.
-
   override protected def routes: Seq[Route] = {
     val standardRoutes = Seq(
       Route(
