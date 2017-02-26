@@ -4,12 +4,13 @@ import com.twitter.concurrent.AsyncStream
 import com.twitter.finagle.Service
 import com.twitter.finagle.http.{ParamMap, Request, Response}
 import com.twitter.finagle.tracing.SpanId
-import com.twitter.io.{Reader, Buf}
+import com.twitter.io.{Buf, Reader}
 import com.twitter.server.handler.EventRecordingHandler._
 import com.twitter.server.util.HttpUtils.{accepts, expectsJson}
 import com.twitter.server.util.{JsonSink, TraceEventSink}
-import com.twitter.util.events.{Sink, Event}
+import com.twitter.util.events.{Event, Sink}
 import com.twitter.util.{Future, Throw, Try}
+import com.twitter.server.{PathResolver, config => configuration}
 import java.util.logging.{LogRecord, Logger}
 
 /**
@@ -217,8 +218,7 @@ private object EventsHandler {
             $(".filter-input").blur();
             $("#eventTable > tbody").empty();
 
-            $.post(
-              "/admin/events",
+            $.post("""" + s"""${PathResolver.routePrefix}""" + """/admin/events",
               {
                 eventType: $('#eventTypeFilter').val(),
                 objectVal: $('#objectValFilter').val(),
@@ -245,7 +245,7 @@ private object EventsHandler {
             });
           });
           $('input:radio[name=recording]').change(function() {
-            $.post("/admin/events/record/" + this.value, loadEvents)
+            $.post("""" + s"""${PathResolver.routePrefix}""" + """/admin/events/record/" + this.value, loadEvents)
             if (this.value == "recordOn") {
               $("#eventTable").show();
             } else {

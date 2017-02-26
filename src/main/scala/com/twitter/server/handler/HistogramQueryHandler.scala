@@ -249,7 +249,7 @@ private[server] class HistogramQueryHandler(details: WithHistogramDetails) exten
               content = Buf.Utf8(renderFront(histograms.keySet.toSeq))
             )
         }
-      case _ => newResponse(contentType = ContentTypeHtml, content = Buf.Utf8("Invalid endpoint. Did you mean /admin/histograms.json?"))
+      case _ => newResponse(contentType = ContentTypeHtml, content = Buf.Utf8(s"Invalid endpoint. Did you mean ${PathResolver.staticPrefix}/admin/histograms.json?"))
     }
   }
 }

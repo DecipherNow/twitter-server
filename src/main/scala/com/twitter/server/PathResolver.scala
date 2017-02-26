@@ -11,14 +11,9 @@ object PathResolver {
   val routePrefix  = configuration.admin.prefix.route()
   val staticPrefix = configuration.admin.prefix.static()
 
-  def createRoutePath(partialRoute: String) : String = {
-    println("PathResolver.createRoutePath ... building the path for U => ")
-    routePrefix + partialRoute
-  }
+  def createRoutePath(partialRoute: String) : String = routePrefix + partialRoute
 
-  def createStaticPath(partialPath: String) : String = {
-    println("PathResolver.createStaticPath ... building the path for U => ")
-    staticPrefix + partialPath
-  }
+  def createStaticPath(partialPath: String) : String = staticPrefix + partialPath
+
 
 }

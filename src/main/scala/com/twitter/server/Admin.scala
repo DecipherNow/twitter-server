@@ -127,7 +127,7 @@ trait Admin { self: App with AdminHttpServer with Stats =>
         path = PathResolver.createRoutePath("/admin/toggles/"), handler = new ToggleHandler(),
         alias = "Toggles", group = None, includeInIndex = false),
       Route(
-        path = "/favicon.ico", ResourceHandler.fromJar(
+        path = PathResolver.createStaticPath("/favicon.ico"), ResourceHandler.fromJar(
           baseRequestPath = "/",
           baseResourcePath = "twitter-server/img"),
         alias = "Favicon", group = None, includeInIndex = false)

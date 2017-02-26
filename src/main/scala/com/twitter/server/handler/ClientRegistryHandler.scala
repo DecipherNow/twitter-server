@@ -15,6 +15,7 @@ import com.twitter.util.Future
 private object ClientRegistryHandler {
 
   val staticPrefix = PathResolver.staticPrefix
+  val routePrefix = PathResolver.routePrefix
 
   case class ClientProfile(
     name: String,
@@ -43,11 +44,11 @@ private object ClientRegistryHandler {
           (for (ClientProfile(name, addr, scope, sr, unavailable) <- profiles) yield {
             s"""<div class="col-md-3">
                   <div class="client">
-                    <h4 class="name"><a href="${staticPrefix}/admin/clients/$name">${escapeHtml(name)}</a></h4>
+                    <h4 class="name"><a href="${routePrefix}/admin/clients/$name">${escapeHtml(name)}</a></h4>
                     <p class="dest text-muted">${escapeHtml(addr)}</p>
                     ${
                       if (unavailable == 0) "" else {
-                        s"""<a href="/admin/metrics#$scope/loadbalancer/available"
+                        s"""<a href="${routePrefix}/admin/metrics#$scope/loadbalancer/available"
                             data-toggle="tooltip" data-placement="top"
                             class="conn-trouble btn-xs btn-default">
                             <span class="glyphicon glyphicon-exclamation-sign"

@@ -3,6 +3,7 @@ package com.twitter.server.view
 import com.twitter.finagle.http.{Request, Response, Status}
 import com.twitter.finagle.{Service, SimpleFilter}
 import com.twitter.io.Buf
+import com.twitter.server.PathResolver
 import com.twitter.server.util.HttpUtils.{expectsHtml, newResponse}
 import com.twitter.util.Future
 
@@ -11,7 +12,7 @@ object NotFoundView {
     s"""<html>
           <head>
             <title>404 &middot; Twitter Server Admin</title>
-            <link type="text/css" href="/admin/files/css/bootstrap.min.css" rel="stylesheet"/>
+            <link type="text/css" href="${PathResolver.staticPrefix}/admin/files/css/bootstrap.min.css" rel="stylesheet"/>
           </head>
           <style>
             body { margin: 20px; }
