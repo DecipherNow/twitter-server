@@ -107,6 +107,9 @@ object IndexView {
               </head>
               <body>
                 <div id="wrapper">
+                  <div id="header">
+                    <img src="${staticPrefix}/admin/files/img/GMFabricDashboardLogo.png" alt="GM Fabric Dashboard" height="49" width="309">
+                  </div>
                   <nav id="sidebar">
                     <ul>${renderNav(nav)}</ul>
                   </nav>
